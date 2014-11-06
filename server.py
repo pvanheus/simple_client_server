@@ -2,9 +2,15 @@
 
 import socket
 import select
+import argparse
+
+parser = argparse.ArgumentParser('simple socket')
+parser.add_argument('--port', type=int, default=1987, help='port to listen on')
+args = parser.parse_args()
+
 server_socket = socket.socket()
 server_name = '127.0.0.1'
-server_port = 1987
+server_port = args.port
 server_socket.bind((server_name,server_port))
 server_socket.listen(5)
 timeout = 60
@@ -29,4 +35,6 @@ while True:
                 print "the message is:", message
                 message_done = True
     print "the message we got was:", message
+    c.send("here is my reply, thank you".encode('utf-8'))
     c.close()
+server_socket.close()
